@@ -1,0 +1,186 @@
+@font-face {
+  font-family: "League Spartan";
+  src: url("../fonts/LeagueSpartan-Bold.ttf") format("woff2");
+}
+
+html {
+  font-family: "League Spartan", sans-serif;
+  font-weight: 700;
+}
+
+body {
+  background-color: hsl(222, 26%, 31%);
+  width: 100vw;
+  min-width: 300px;
+  height: 100vh;
+  padding: 25px;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  box-sizing: border-box;
+  color: hsl(0, 0%, 100%);
+}
+
+.outerFrame {
+  background-color: hsl(222, 26%, 31%);
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  border-radius: 5px;
+}
+
+.headerBox {
+  min-height: 40px;
+  margin-bottom: 30px;
+  width: 100%;
+}
+
+.resultBoxFrame {
+  padding: 10px;
+  border-radius: 10px;
+  margin-bottom: 30px;
+  min-height: 80px;
+  background-color: hsl(224, 36%, 15%);
+}
+
+.resultBox {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: end;
+  align-items: center;
+  overflow-wrap: anywhere;
+}
+
+.keyboardFrame {
+  border-radius: 10px;
+  background-color: hsl(223, 31%, 20%);
+  padding: 20px;
+  flex: 1;
+  display: flex;
+}
+
+.keyboard {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
+  row-gap: 11px;
+  column-gap: 11px;
+  grid-template-areas:
+    "keySeven keyEight keyNine keyDel"
+    "keyFour keyFive keySix keyAdd"
+    "keyOne keyTwo keyThree keySubstract"
+    "keyDot keyZero keyDivide keyMultiply"
+    "keyReset keyReset keyEqual keyEqual";
+}
+
+.grid-item {
+  background-color: hsl(30, 25%, 89%);
+  font-size: 32px;
+  text-align: center;
+  border-radius: 5px;
+  color: hsl(221, 14%, 31%);
+  font-family: inherit;
+  font-weight: inherit;
+}
+
+.keyDel,
+.keyReset {
+  font-size: 20px;
+}
+
+.keyOne {
+  grid-area: keyOne;
+}
+.keyTwo {
+  grid-area: keyTwo;
+}
+.keyThree {
+  grid-area: keyThree;
+}
+.keyFour {
+  grid-area: keyFour;
+}
+.keyFive {
+  grid-area: keyFive;
+}
+.keySix {
+  grid-area: keySix;
+}
+.keySeven {
+  grid-area: keySeven;
+}
+.keyEight {
+  grid-area: keyEight;
+}
+.keyNine {
+  grid-area: keyNine;
+}
+.keyZero {
+  grid-area: keyZero;
+}
+.keyDel {
+  grid-area: keyDel;
+  color: hsl(0, 0%, 100%);
+  background-color: hsl(224, 28%, 35%);
+}
+.keyAdd {
+  grid-area: keyAdd;
+}
+.keySubstract {
+  grid-area: keySubstract;
+}
+.keyMultiply {
+  grid-area: keyMultiply;
+}
+.keyDivide {
+  grid-area: keyDivide;
+}
+.keyDot {
+  grid-area: keyDot;
+}
+.keyReset {
+  grid-area: keyReset;
+  color: hsl(0, 0%, 100%);
+  background-color: hsl(224, 28%, 35%);
+}
+.keyEqual {
+  grid-area: keyEqual;
+  color: hsl(0, 0%, 100%);
+  background-color: hsl(6, 63%, 50%);
+  font-size: 24px;
+}
+
+.titleBar {
+  font-size: 24px;
+}
+
+.resultBox {
+  font-size: 36px;
+}
+
+.bckgrnd {
+  background-color: hsl(222, 26%, 31%);
+  background-color: hsl(223, 31%, 20%);
+  background-color: hsl(224, 36%, 15%);
+}
+
+.keys {
+  background-color: hsl(225, 21%, 49%);
+  background-color: hsl(224, 28%, 35%);
+
+  background-color: hsl(6, 63%, 50%);
+  background-color: hsl(6, 70%, 34%);
+
+  background-color: hsl(30, 25%, 89%);
+  background-color: hsl(28, 16%, 65%);
+}
+
+.text {
+  background-color: hsl(221, 14%, 31%);
+  background-color: hsl(0, 0%, 100%);
+}
