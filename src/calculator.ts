@@ -47,6 +47,7 @@ function insertValues(value: string) {
 }
 
 function insertOperator(value: string) {
+  currentValue = currentValue === "" ? (currentValue = "0") : currentValue;
   currentValue = currentValue[currentValue.length - 1].match(
     new RegExp(/[+|\-|\/|*]$/g)
   )
@@ -66,6 +67,7 @@ function resetValues() {
 }
 
 function calculate() {
+  currentValue = currentValue === "" ? (currentValue = "0") : currentValue;
   let resultValue: number = eval(currentValue);
   currentValue = resultValue.toString();
 }
