@@ -67,7 +67,45 @@ function resetValues() {
 }
 
 function calculate() {
-  currentValue = currentValue === "" ? (currentValue = "0") : currentValue;
-  let resultValue: number = eval(currentValue);
-  currentValue = resultValue.toString();
+  let operatorExp = new RegExp(/(?=[+|\-|\/|*])|(?<=[+|\-|\/|*])/g);
+  dividerMultiplier("*", operatorExp);
+  dividerMultiplier("/", operatorExp);
+  addSubstract();
+}
+
+function dividerMultiplier(operator: string, operatorExp: any) {
+  while (currentValue.indexOf(operator) !== -1) {
+    let indexArray: Array<string> = currentValue.split(operatorExp);
+
+    let indexB: number = indexArray.indexOf(operator);
+    let indexA: number = indexB - 1;
+    let indexC: number = indexB + 1;
+
+    if (operator === "*") {
+      indexArray[indexA] = (
+        parseFloat(indexArray[indexA]) * parseFloat(indexArray[indexC])
+      ).toString();
+    }
+    if (operator === "/") {
+      indexArray[indexA] = (
+        parseFloat(indexArray[indexA]) / parseFloat(indexArray[indexC])
+      ).toString();
+    }
+
+    indexArray[indexB] = "";
+    indexArray[indexC] = "";
+
+    currentValue = indexArray.join("");
+  }
+}
+
+function addSubstract() {
+  let operatorExp = new RegExp(/(?=[+|\-])/g);
+  let indexArray: Array<string> = currentValue.split(operatorExp);
+  let numberArray: Array<number> = indexArray.map((element) =>
+    parseFloat(element)
+  );
+  currentValue = numberArray
+    .reduce((accumulator, currentValue) => accumulator + currentValue, 0)
+    .toString();
 }
