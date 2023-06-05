@@ -25,6 +25,14 @@ function checker(value: string) {
     calculate();
   }
   document.querySelector(".resultBox").innerHTML = currentValue;
+  if (currentValue === "NaN") {
+    currentValue = "0";
+    document.querySelector(".resultBox").innerHTML = "INPUT ERROR";
+  }
+  if (currentValue === "divbyzero") {
+    currentValue = "0";
+    document.querySelector(".resultBox").innerHTML = "DIVIDE BY ZERO";
+  }
 }
 
 function insertValues(value: string) {
@@ -67,38 +75,47 @@ function resetValues() {
 }
 
 function calculate() {
-  let operatorExp = new RegExp(/(?=[+|\-|\/|*])|(?<=[+|\-|\/|*])/g);
-  dividerMultiplier("*", operatorExp);
-  dividerMultiplier("/", operatorExp);
-  addSubstract();
+  const operatorExp = new RegExp(/(?=[+|\-|\/|*])|(?<=[+|\-|\/|*])/g);
+  dividerMultiplier(operatorExp);
 }
 
-function dividerMultiplier(operator: string, operatorExp: any) {
-  while (currentValue.indexOf(operator) !== -1) {
-    let indexArray: Array<string> = currentValue.split(operatorExp);
+function dividerMultiplier(operatorExp: any) {
+  try {
+    const operator = new RegExp(/([\/|*])/g);
+    while (currentValue.search(operator) !== -1) {
+      let currentOperator: string = currentValue[currentValue.search(operator)];
+      let indexArray: Array<string> = currentValue.split(operatorExp);
 
-    let indexB: number = indexArray.indexOf(operator);
-    let indexA: number = indexB - 1;
-    let indexC: number = indexB + 1;
+      let indexB: number = indexArray.indexOf(currentOperator);
+      let indexA: number = indexB - 1;
+      let indexC: number = indexB + 1;
 
-    if (operator === "*") {
-      indexArray[indexA] = (
-        parseFloat(indexArray[indexA]) * parseFloat(indexArray[indexC])
-      ).toString();
+      if (currentOperator === "*") {
+        indexArray[indexA] = (
+          parseFloat(indexArray[indexA]) * parseFloat(indexArray[indexC])
+        ).toString();
+      }
+
+      if (currentOperator === "/") {
+        if (parseFloat(indexArray[indexC]) === 0) {
+          throw new TypeError("divideBy0");
+        } else {
+          indexArray[indexA] = (
+            parseFloat(indexArray[indexA]) / parseFloat(indexArray[indexC])
+          ).toString();
+        }
+      }
+
+      indexArray[indexB] = "";
+      indexArray[indexC] = "";
+
+      currentValue = indexArray.join("");
     }
-    if (operator === "/") {
-      indexArray[indexA] = (
-        parseFloat(indexArray[indexA]) / parseFloat(indexArray[indexC])
-      ).toString();
-    }
-
-    indexArray[indexB] = "";
-    indexArray[indexC] = "";
-
-    currentValue = indexArray.join("");
+    addSubstract();
+  } catch {
+    currentValue = "divbyzero";
   }
 }
-
 function addSubstract() {
   let operatorExp = new RegExp(/(?=[+|\-])/g);
   let indexArray: Array<string> = currentValue.split(operatorExp);
