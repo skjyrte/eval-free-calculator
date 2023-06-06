@@ -87,7 +87,7 @@ body {
 }
 
 .keyboardFrame {
-  //border-radius: 10px;
+  border-radius: 10px;
   background-color: var(--color7);
   padding: 20px;
   flex: 1;
@@ -97,10 +97,15 @@ body {
 .keyboard {
   width: 100%;
   display: grid;
-  grid-template-columns: 23% 23% 23% 23%;
-  grid-template-rows: 18% 18% 18% 18% 18%;
-  row-gap: 2.5%;
-  column-gap: 2.67%;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr) minmax(
+      0,
+      1fr
+    );
+  grid-template-rows:
+    minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr)
+    minmax(0, 1fr);
+  row-gap: 11px;
+  column-gap: 11px;
   grid-template-areas:
     "keySeven keyEight keyNine keyDel"
     "keyFour keyFive keySix keyAdd"
@@ -110,6 +115,11 @@ body {
 }
 
 .gridItem {
+  width: 100%;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   background-color: var(--color4);
   font-size: 32px;
   text-align: center;
@@ -245,14 +255,15 @@ body {
   }
 }
 
-.activatedStateOff,
-.activatedStateOn {
-  &:hover {
-    transition: 0.5s;
-    background-color: var(--color4);
+@media (hover: hover) {
+  .activatedStateOff,
+  .activatedStateOn {
+    &:hover {
+      transition: 0.5s;
+      background-color: var(--color4);
+    }
   }
 }
-
 .activatedStateOff {
   background-color: transparent;
 }

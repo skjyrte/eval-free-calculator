@@ -75,16 +75,19 @@ function resetValues() {
 }
 
 function calculate() {
-  const operatorExp = new RegExp(/(?=[+|\-|\/|*])|(?<=[+|\-|\/|*])/g);
+  const operatorExp = new RegExp(/([+\-\/\*])/g);
   dividerMultiplier(operatorExp);
 }
 
 function dividerMultiplier(operatorExp: any) {
   try {
-    const operator = new RegExp(/([\/|*])/g);
+    const operator = new RegExp(/([\/\*])/g);
     while (currentValue.search(operator) !== -1) {
       let currentOperator: string = currentValue[currentValue.search(operator)];
+      console.log(currentOperator);
+      console.log(currentValue);
       let indexArray: Array<string> = currentValue.split(operatorExp);
+      console.log(indexArray);
 
       let indexB: number = indexArray.indexOf(currentOperator);
       let indexA: number = indexB - 1;
