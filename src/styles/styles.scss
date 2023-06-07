@@ -271,3 +271,12 @@ body {
 .activatedStateOn {
   background-color: var(--color3);
 }
+
+@media (min-width: 600px) {
+  .outerFrame {
+    width: 550px;
+    height: 800px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}

@@ -7,11 +7,11 @@ document.querySelector(".keyboard").addEventListener("click", (event) => {
 });
 
 function checker(value: string) {
-  if (value.match(new RegExp(/^[0-9|.|]$/g))) {
+  if (value.match(new RegExp(/^[0-9.]$/g))) {
     insertValues(value);
   }
 
-  if (value.match(new RegExp(/[+|\-|\/|*]$/g))) {
+  if (value.match(new RegExp(/[\+\-\/\*]$/g))) {
     insertOperator(value);
   }
 
@@ -21,17 +21,19 @@ function checker(value: string) {
   if (value === "reset") {
     resetValues();
   }
-  if (value === "=") {
-    calculate();
-  }
   document.querySelector(".resultBox").innerHTML = currentValue;
-  if (currentValue === "NaN") {
-    currentValue = "0";
-    document.querySelector(".resultBox").innerHTML = "INPUT ERROR";
-  }
-  if (currentValue === "divbyzero") {
-    currentValue = "0";
-    document.querySelector(".resultBox").innerHTML = "DIVIDE BY ZERO";
+
+  if (value === "=") {
+    try {
+      calculate();
+      document.querySelector(".resultBox").innerHTML = currentValue;
+      if (currentValue === "NaN") {
+        throw new TypeError("INPUT ERROR");
+      }
+    } catch (e) {
+      currentValue = "0";
+      document.querySelector(".resultBox").innerHTML = e.message;
+    }
   }
 }
 
@@ -57,7 +59,7 @@ function insertValues(value: string) {
 function insertOperator(value: string) {
   currentValue = currentValue === "" ? (currentValue = "0") : currentValue;
   currentValue = currentValue[currentValue.length - 1].match(
-    new RegExp(/[+|\-|\/|*]$/g)
+    new RegExp(/[\+\-\/\*]$/g)
   )
     ? currentValue
     : currentValue + value;
@@ -75,19 +77,16 @@ function resetValues() {
 }
 
 function calculate() {
-  const operatorExp = new RegExp(/([+\-\/\*])/g);
+  const operatorExp = new RegExp(/(\+|\-|\/|\*)/g);
   dividerMultiplier(operatorExp);
 }
 
 function dividerMultiplier(operatorExp: any) {
   try {
-    const operator = new RegExp(/([\/\*])/g);
+    const operator = new RegExp(/(\/|\*)/g);
     while (currentValue.search(operator) !== -1) {
       let currentOperator: string = currentValue[currentValue.search(operator)];
-      console.log(currentOperator);
-      console.log(currentValue);
       let indexArray: Array<string> = currentValue.split(operatorExp);
-      console.log(indexArray);
 
       let indexB: number = indexArray.indexOf(currentOperator);
       let indexA: number = indexB - 1;
@@ -101,7 +100,7 @@ function dividerMultiplier(operatorExp: any) {
 
       if (currentOperator === "/") {
         if (parseFloat(indexArray[indexC]) === 0) {
-          throw new TypeError("divideBy0");
+          throw new TypeError("DIVIDE BY ZERO");
         } else {
           indexArray[indexA] = (
             parseFloat(indexArray[indexA]) / parseFloat(indexArray[indexC])
@@ -115,12 +114,12 @@ function dividerMultiplier(operatorExp: any) {
       currentValue = indexArray.join("");
     }
     addSubstract();
-  } catch {
-    currentValue = "divbyzero";
+  } catch (e) {
+    throw new TypeError(e.message);
   }
 }
 function addSubstract() {
-  let operatorExp = new RegExp(/(?=[+|\-])/g);
+  let operatorExp = new RegExp(/(?=[+\-])/g);
   let indexArray: Array<string> = currentValue.split(operatorExp);
   let numberArray: Array<number> = indexArray.map((element) =>
     parseFloat(element)
