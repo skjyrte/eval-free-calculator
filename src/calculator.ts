@@ -10,11 +10,9 @@ function checker(value: string) {
   if (value.match(new RegExp(/^[0-9.]$/g))) {
     insertValues(value);
   }
-
   if (value.match(new RegExp(/[\+\-\/\*]$/g))) {
     insertOperator(value);
   }
-
   if (value === "del") {
     deleteCharacter(value);
   }
@@ -22,7 +20,6 @@ function checker(value: string) {
     resetValues();
   }
   document.querySelector(".resultBox").innerHTML = currentValue;
-
   if (value === "=") {
     try {
       calculate();
