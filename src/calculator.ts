@@ -1,40 +1,45 @@
-let currentValue: string = "0";
-
 document.querySelector(".keyboard").addEventListener("click", (event) => {
   if ((event.target as HTMLInputElement).value != undefined) {
-    return checker((event.target as HTMLInputElement).value);
+    let currentValue: string = document.querySelector(".resultBox").innerHTML;
+    return checker((event.target as HTMLInputElement).value, currentValue);
   }
 });
 
-function checker(value: string) {
-  if (value.match(new RegExp(/^[0-9.]$/g))) {
-    insertValues(value);
-  }
-  if (value.match(new RegExp(/[\+\-\/\*]$/g))) {
-    insertOperator(value);
-  }
-  if (value === "del") {
-    deleteCharacter(value);
-  }
-  if (value === "reset") {
-    resetValues();
-  }
-  document.querySelector(".resultBox").innerHTML = currentValue;
-  if (value === "=") {
-    try {
-      calculate();
+function checker(value: string, currentValue: string) {
+  try {
+    if (value !== "=") {
+      currentValue = typer(value, currentValue);
       document.querySelector(".resultBox").innerHTML = currentValue;
-      if (currentValue === "NaN") {
-        throw new TypeError("INPUT ERROR");
-      }
-    } catch (e) {
-      currentValue = "0";
-      document.querySelector(".resultBox").innerHTML = e.message;
     }
+    if (value === "=") {
+      currentValue = calculate(currentValue);
+      document.querySelector(".resultBox").innerHTML = currentValue;
+    }
+    if (currentValue === "NaN") {
+      throw new TypeError("INPUT ERROR");
+    }
+  } catch (e) {
+    currentValue = "0";
+    document.querySelector(".resultBox").innerHTML = e.message;
   }
 }
 
-function insertValues(value: string) {
+function typer(value: string, currentValue: string) {
+  if (value.match(new RegExp(/^[0-9.]$/g))) {
+    return insertValues(value, currentValue);
+  }
+  if (value.match(new RegExp(/[\+\-\/\*]$/g))) {
+    return insertOperator(value, currentValue);
+  }
+  if (value === "del") {
+    return deleteCharacter(currentValue);
+  }
+  if (value === "reset") {
+    return "0";
+  }
+}
+
+function insertValues(value: string, currentValue: string) {
   let lastIndex: number = Math.max(
     currentValue.lastIndexOf("-"),
     currentValue.lastIndexOf("+"),
@@ -51,34 +56,36 @@ function insertValues(value: string) {
   } else {
     currentValue = currentValue !== "0" ? currentValue + value : value;
   }
+  return currentValue;
 }
 
-function insertOperator(value: string) {
+function insertOperator(value: string, currentValue: string) {
   currentValue = currentValue === "" ? (currentValue = "0") : currentValue;
   currentValue = currentValue[currentValue.length - 1].match(
     new RegExp(/[\+\-\/\*]$/g)
   )
     ? currentValue
     : currentValue + value;
+  return currentValue;
 }
 
-function deleteCharacter(value: string) {
+function deleteCharacter(currentValue: string) {
   currentValue = currentValue.slice(0, -1);
-  if (currentValue === "") {
-    resetValues;
+  if (
+    currentValue === "" ||
+    currentValue.search(new RegExp(/^[A-Z]/g)) !== -1
+  ) {
+    currentValue = "0";
   }
+  return currentValue;
 }
 
-function resetValues() {
-  currentValue = "0";
-}
-
-function calculate() {
+function calculate(currentValue: string) {
   const operatorExp = new RegExp(/(\+|\-|\/|\*)/g);
-  dividerMultiplier(operatorExp);
+  return dividerMultiplier(operatorExp, currentValue);
 }
 
-function dividerMultiplier(operatorExp: any) {
+function dividerMultiplier(operatorExp: any, currentValue: string) {
   try {
     const operator = new RegExp(/(\/|\*)/g);
     while (currentValue.search(operator) !== -1) {
@@ -110,18 +117,20 @@ function dividerMultiplier(operatorExp: any) {
 
       currentValue = indexArray.join("");
     }
-    addSubstract();
+    return addSubstract(currentValue);
   } catch (e) {
     throw new TypeError(e.message);
   }
 }
-function addSubstract() {
+function addSubstract(currentValue: string) {
   let operatorExp = new RegExp(/(?=[+\-])/g);
   let indexArray: Array<string> = currentValue.split(operatorExp);
   let numberArray: Array<number> = indexArray.map((element) =>
     parseFloat(element)
   );
-  currentValue = numberArray
+  return numberArray
     .reduce((accumulator, currentValue) => accumulator + currentValue, 0)
     .toString();
 }
+
+module.exports = checker;
