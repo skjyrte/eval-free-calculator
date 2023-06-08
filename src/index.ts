@@ -3,4 +3,4 @@ import "./styles/styles.scss";
 import "./theme.ts";
 import "./calculator.ts";
 
-import "./checker.test.ts";
+import "./calculator.test.ts";

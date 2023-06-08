@@ -133,4 +133,4 @@ function addSubstract(currentValue: string) {
     .toString();
 }
 
-module.exports = checker;
+export default checker;
