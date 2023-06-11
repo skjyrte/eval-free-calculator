@@ -1,136 +1,163 @@
 document.querySelector(".keyboard").addEventListener("click", (event) => {
   if ((event.target as HTMLInputElement).value != undefined) {
-    let currentValue: string = document.querySelector(".resultBox").innerHTML;
-    return checker((event.target as HTMLInputElement).value, currentValue);
+    document.querySelector(".resultBox").innerHTML = processInput(
+      (event.target as HTMLInputElement).value,
+      document.querySelector(".resultBox").innerHTML
+    );
   }
 });
 
-function checker(value: string, currentValue: string) {
-  try {
-    if (value !== "=") {
-      currentValue = typer(value, currentValue);
-      document.querySelector(".resultBox").innerHTML = currentValue;
-    }
-    if (value === "=") {
-      currentValue = calculate(currentValue);
-      document.querySelector(".resultBox").innerHTML = currentValue;
-    }
-    if (currentValue === "NaN") {
-      throw new TypeError("INPUT ERROR");
-    }
-  } catch (e) {
-    currentValue = "0";
-    document.querySelector(".resultBox").innerHTML = e.message;
+export function processInput(lastInput: string, currentString: string) {
+  if (lastInput !== "=") {
+    return valueEdit(lastInput, currentString);
+  }
+  if (lastInput === "=") {
+    return calculateNumber(currentString);
   }
 }
 
-function typer(value: string, currentValue: string) {
-  if (value.match(new RegExp(/^[0-9.]$/g))) {
-    return insertValues(value, currentValue);
+function valueEdit(lastInput: string, currentString: string) {
+  if (lastInput.match(new RegExp(/^[0-9.]$/g))) {
+    return addNumber(lastInput, currentString);
   }
-  if (value.match(new RegExp(/[\+\-\/\*]$/g))) {
-    return insertOperator(value, currentValue);
+  if (lastInput.match(new RegExp(/[\+\-\/\*]$/g))) {
+    return addOperator(lastInput, currentString);
   }
-  if (value === "del") {
-    return deleteCharacter(currentValue);
+  if (lastInput === "del") {
+    return deleteCharacter(currentString);
   }
-  if (value === "reset") {
+  if (lastInput === "reset") {
     return "0";
   }
 }
 
-function insertValues(value: string, currentValue: string) {
-  let lastIndex: number = Math.max(
-    currentValue.lastIndexOf("-"),
-    currentValue.lastIndexOf("+"),
-    currentValue.lastIndexOf("*"),
-    currentValue.lastIndexOf("/")
+function addNumber(lastInput: string, currentString: string) {
+  let lastOperatorIndex: number = Math.max(
+    currentString.lastIndexOf("-"),
+    currentString.lastIndexOf("+"),
+    currentString.lastIndexOf("*"),
+    currentString.lastIndexOf("/")
   );
-  if (value === ".") {
-    currentValue =
-      currentValue
-        .substring(lastIndex, currentValue.length - 1)
+  let resultString: string = currentString;
+  if (lastInput === ".") {
+    resultString =
+      currentString
+        .substring(lastOperatorIndex, currentString.length - 1)
         .indexOf(".") === -1
-        ? currentValue + value
-        : currentValue;
+        ? currentString + lastInput
+        : currentString;
   } else {
-    currentValue = currentValue !== "0" ? currentValue + value : value;
+    resultString =
+      currentString !== "0" ? currentString + lastInput : lastInput;
   }
-  return currentValue;
+  return checkInputForText(resultString);
 }
 
-function insertOperator(value: string, currentValue: string) {
-  currentValue = currentValue === "" ? (currentValue = "0") : currentValue;
-  currentValue = currentValue[currentValue.length - 1].match(
+function addOperator(lastInput: string, currentString: string) {
+  let resultString: string =
+    currentString === "" ? (currentString = "0") : currentString;
+  resultString = resultString[resultString.length - 1].match(
     new RegExp(/[\+\-\/\*]$/g)
   )
-    ? currentValue
-    : currentValue + value;
-  return currentValue;
+    ? resultString
+    : resultString + lastInput;
+  return checkInputForText(resultString);
 }
 
-function deleteCharacter(currentValue: string) {
-  currentValue = currentValue.slice(0, -1);
+function checkInputForText(currentString: string) {
   if (
-    currentValue === "" ||
-    currentValue.search(new RegExp(/^[A-Z]/g)) !== -1
+    currentString === "" ||
+    currentString.search(new RegExp(/^[A-Z]/g)) !== -1
   ) {
-    currentValue = "0";
+    return "0";
+  } else {
+    return currentString;
   }
-  return currentValue;
 }
 
-function calculate(currentValue: string) {
-  const operatorExp = new RegExp(/(\+|\-|\/|\*)/g);
-  return dividerMultiplier(operatorExp, currentValue);
+function deleteCharacter(currentString: string) {
+  let resultString: string = currentString.slice(0, -1);
+  return checkInputForText(resultString);
 }
 
-function dividerMultiplier(operatorExp: any, currentValue: string) {
+export function calculateNumber(currentString: string) {
+  const regexInputCheck = new RegExp(/(\+|\-|\/|\*|\.|[0-9])/g);
   try {
-    const operator = new RegExp(/(\/|\*)/g);
-    while (currentValue.search(operator) !== -1) {
-      let currentOperator: string = currentValue[currentValue.search(operator)];
-      let indexArray: Array<string> = currentValue.split(operatorExp);
+    for (let letter of currentString) {
+      if (letter.search(regexInputCheck) === -1) {
+        throw new TypeError("INTERNAL ERROR");
+      }
+    }
+    return divideMultiply(currentString);
+  } catch (e) {
+    return e.message;
+  }
+}
 
-      let indexB: number = indexArray.indexOf(currentOperator);
+function divideMultiply(currentString: string) {
+  const regexOperatorAll = new RegExp(/(\+|\-|\/|\*)/g);
+  const regexOperatorCurrent = new RegExp(/(\/|\*)/g);
+  try {
+    let resultString: string = currentString;
+    while (resultString.search(regexOperatorCurrent) !== -1) {
+      let currentOperator: string =
+        resultString[resultString.search(regexOperatorCurrent)];
+      let indexOperatorArray: Array<string> =
+        resultString.split(regexOperatorAll);
+
+      let indexB: number = indexOperatorArray.indexOf(currentOperator);
       let indexA: number = indexB - 1;
       let indexC: number = indexB + 1;
 
       if (currentOperator === "*") {
-        indexArray[indexA] = (
-          parseFloat(indexArray[indexA]) * parseFloat(indexArray[indexC])
+        indexOperatorArray[indexA] = (
+          parseFloat(indexOperatorArray[indexA]) *
+          parseFloat(indexOperatorArray[indexC])
         ).toString();
       }
 
       if (currentOperator === "/") {
-        if (parseFloat(indexArray[indexC]) === 0) {
+        if (parseFloat(indexOperatorArray[indexC]) === 0) {
           throw new TypeError("DIVIDE BY ZERO");
         } else {
-          indexArray[indexA] = (
-            parseFloat(indexArray[indexA]) / parseFloat(indexArray[indexC])
+          indexOperatorArray[indexA] = (
+            parseFloat(indexOperatorArray[indexA]) /
+            parseFloat(indexOperatorArray[indexC])
           ).toString();
         }
       }
 
-      indexArray[indexB] = "";
-      indexArray[indexC] = "";
+      indexOperatorArray[indexB] = "";
+      indexOperatorArray[indexC] = "";
 
-      currentValue = indexArray.join("");
+      resultString = indexOperatorArray.join("");
     }
-    return addSubstract(currentValue);
+    return addSubtract(resultString);
   } catch (e) {
-    throw new TypeError(e.message);
+    return e.message;
   }
 }
-function addSubstract(currentValue: string) {
-  let operatorExp = new RegExp(/(?=[+\-])/g);
-  let indexArray: Array<string> = currentValue.split(operatorExp);
-  let numberArray: Array<number> = indexArray.map((element) =>
-    parseFloat(element)
-  );
-  return numberArray
-    .reduce((accumulator, currentValue) => accumulator + currentValue, 0)
-    .toString();
-}
 
-export default checker;
+export function addSubtract(currentString: string) {
+  let regexOperatorCurrent = new RegExp(/(?=[+\-])/g);
+  const regexConversionCheck = new RegExp(/(\/|\*)/g);
+  try {
+    if (currentString.search(regexConversionCheck) !== -1) {
+      throw new TypeError("INTERNAL ERROR");
+    }
+    let indexOperatorArray: Array<string> =
+      currentString.split(regexOperatorCurrent);
+    let numberArray: Array<number> = indexOperatorArray.map((element) =>
+      parseFloat(element)
+    );
+    let resultString: string = numberArray
+      .reduce((accumulator, resultString) => accumulator + resultString, 0)
+      .toString();
+    if (resultString === "NaN") {
+      throw new TypeError("INPUT ERROR");
+    }
+    return resultString;
+  } catch (e) {
+    return e.message;
+  }
+}
