@@ -2,6 +2,14 @@
 
 Basic calculator app without the use of eval function.
 
+## Live preview:
+
+https://eval-free-calculator.onrender.com
+
+## Template for the project:
+
+https://www.frontendmentor.io/challenges/calculator-app-9lteq5N29
+
 ## Features:
 
 - Themes.
