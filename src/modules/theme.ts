@@ -1,5 +1,5 @@
 (function initialTheme() {
-  let storageTheme: string = localStorage.getItem("theme");
+  const storageTheme: string = localStorage.getItem("theme");
   if (storageTheme === "1" || storageTheme === "2" || storageTheme === "3") {
     buttonShutter();
     themeSwitcher(storageTheme);
@@ -10,7 +10,7 @@
 })();
 
 document.querySelector(".radioBox").addEventListener("click", (event) => {
-  let themeNumber: string = (event.target as HTMLDivElement).dataset.value;
+  const themeNumber: string = (event.target as HTMLDivElement).dataset.value;
   if (themeNumber === "1" || themeNumber === "2" || themeNumber === "3") {
     buttonShutter();
     themeSwitcher(themeNumber);
@@ -26,10 +26,6 @@ function buttonShutter() {
 }
 function themeSwitcher(theme: string) {
   document.documentElement.className = `theme${theme}Color`;
-  document
-    .querySelector(`.theme${theme}Button`)
-    .classList.remove("activatedStateOff");
-  document
-    .querySelector(`.theme${theme}Button`)
-    .classList.add("activatedStateOn");
+  document.querySelector(`.theme${theme}Button`).classList.remove("activatedStateOff");
+  document.querySelector(`.theme${theme}Button`).classList.add("activatedStateOn");
 }

@@ -1,63 +1,62 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Frontend Mentor | Calculator app</title>
-    <link rel="stylesheet" href="./main.css" />
-  </head>
-  <body>
-    <div class="outerFrame">
-      <div class="headerBox">
-        <div class="titleBar">calc</div>
-        <div class="spaceBar"></div>
-        <div class="themeParagraph">THEME</div>
-        <div class="themeRadio">
-          <div class="radioBox">
-            <div class="theme1Button theme activatedStateOff" data-value="1">
-              <div class="label">1</div>
-            </div>
-            <div class="theme2Button theme activatedStateOff" data-value="2">
-              <div class="label">2</div>
-            </div>
-            <div class="theme3Button theme activatedStateOff" data-value="3">
-              <div class="label">3</div>
-            </div>
+
+<head>
+  <title>Eval-free calculator</title>
+<meta name="charset" content="UTF-8"><meta name="name" content="viewport"><meta name="content" content="width=device-width, initial-scale=1.0"><link rel="icon" type="image/x-icon" href="assets/favicon.ico"><link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16x16.png"><link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32x32.png"><link rel="icon" type="image/png" sizes="48x48" href="assets/favicon-48x48.png"><link rel="manifest" href="assets/manifest.webmanifest"><meta name="mobile-web-app-capable" content="yes"><meta name="theme-color" content="#fff"><meta name="application-name" content="advice-generator-app"><link rel="apple-touch-icon" sizes="57x57" href="assets/apple-touch-icon-57x57.png"><link rel="apple-touch-icon" sizes="60x60" href="assets/apple-touch-icon-60x60.png"><link rel="apple-touch-icon" sizes="72x72" href="assets/apple-touch-icon-72x72.png"><link rel="apple-touch-icon" sizes="76x76" href="assets/apple-touch-icon-76x76.png"><link rel="apple-touch-icon" sizes="114x114" href="assets/apple-touch-icon-114x114.png"><link rel="apple-touch-icon" sizes="120x120" href="assets/apple-touch-icon-120x120.png"><link rel="apple-touch-icon" sizes="144x144" href="assets/apple-touch-icon-144x144.png"><link rel="apple-touch-icon" sizes="152x152" href="assets/apple-touch-icon-152x152.png"><link rel="apple-touch-icon" sizes="167x167" href="assets/apple-touch-icon-167x167.png"><link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon-180x180.png"><link rel="apple-touch-icon" sizes="1024x1024" href="assets/apple-touch-icon-1024x1024.png"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="advice-generator-app"><meta name="msapplication-TileColor" content="#fff"><meta name="msapplication-TileImage" content="assets/mstile-144x144.png"><meta name="msapplication-config" content="assets/browserconfig.xml"><link href="main.52e83a19f42dd67b9de7.css" rel="stylesheet"></head>
+
+<body>
+  <div class="outerFrame">
+    <div class="headerBox">
+      <div class="titleBar">calc</div>
+      <div class="spaceBar"></div>
+      <div class="themeParagraph">THEME</div>
+      <div class="themeRadio">
+        <div class="radioBox">
+          <div class="theme1Button theme activatedStateOff" data-value="1">
+            <div class="label">1</div>
+          </div>
+          <div class="theme2Button theme activatedStateOff" data-value="2">
+            <div class="label">2</div>
+          </div>
+          <div class="theme3Button theme activatedStateOff" data-value="3">
+            <div class="label">3</div>
           </div>
         </div>
       </div>
-      <div class="resultBoxFrame">
-        <div class="resultBox">0</div>
-      </div>
-      <div class="keyboardFrame">
-        <div class="keyboard">
-          <button type="button" class="gridItem keyOne" value="1">1</button>
-          <button type="button" class="gridItem keyTwo" value="2">2</button>
-          <button type="button" class="gridItem keyThree" value="3">3</button>
-          <button type="button" class="gridItem keyFour" value="4">4</button>
-          <button type="button" class="gridItem keyFive" value="5">5</button>
-          <button type="button" class="gridItem keySix" value="6">6</button>
-          <button type="button" class="gridItem keySeven" value="7">7</button>
-          <button type="button" class="gridItem keyEight" value="8">8</button>
-          <button type="button" class="gridItem keyNine" value="9">9</button>
-          <button type="button" class="gridItem keyZero" value="0">0</button>
-          <button type="button" class="gridItem keyDel" value="del">DEL</button>
-          <button type="button" class="gridItem keyAdd" value="+">+</button>
-          <button type="button" class="gridItem keySubstract" value="-">
-            -
-          </button>
-          <button type="button" class="gridItem keyMultiply" value="*">
-            x
-          </button>
-          <button type="button" class="gridItem keyDivide" value="/">/</button>
-          <button type="button" class="gridItem keyDot" value=".">.</button>
-          <button type="button" class="gridItem keyReset" value="reset">
-            RESET
-          </button>
-          <button type="button" class="gridItem keyEqual" value="=">=</button>
-        </div>
+    </div>
+    <div class="resultBoxFrame">
+      <div class="resultBox">0</div>
+    </div>
+    <div class="keyboardFrame">
+      <div class="keyboard">
+        <button type="button" class="gridItem keyOne" value="1">1</button>
+        <button type="button" class="gridItem keyTwo" value="2">2</button>
+        <button type="button" class="gridItem keyThree" value="3">3</button>
+        <button type="button" class="gridItem keyFour" value="4">4</button>
+        <button type="button" class="gridItem keyFive" value="5">5</button>
+        <button type="button" class="gridItem keySix" value="6">6</button>
+        <button type="button" class="gridItem keySeven" value="7">7</button>
+        <button type="button" class="gridItem keyEight" value="8">8</button>
+        <button type="button" class="gridItem keyNine" value="9">9</button>
+        <button type="button" class="gridItem keyZero" value="0">0</button>
+        <button type="button" class="gridItem keyDel" value="del">DEL</button>
+        <button type="button" class="gridItem keyAdd" value="+">+</button>
+        <button type="button" class="gridItem keySubstract" value="-">
+          -
+        </button>
+        <button type="button" class="gridItem keyMultiply" value="*">
+          x
+        </button>
+        <button type="button" class="gridItem keyDivide" value="/">/</button>
+        <button type="button" class="gridItem keyDot" value=".">.</button>
+        <button type="button" class="gridItem keyReset" value="reset">
+          RESET
+        </button>
+        <button type="button" class="gridItem keyEqual" value="=">=</button>
       </div>
     </div>
-    <script src="./bundle.js"></script>
-  </body>
+  </div>
+<script defer src="main.ba26f0a64b50a0616ae4.js"></script></body>
+
 </html>

@@ -1,4 +1,6 @@
 0_untracked
-images
 node_modules
-*.json
+dist
+.*
+/src/favicons
+/src/fonts
