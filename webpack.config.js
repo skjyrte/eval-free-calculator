@@ -42,16 +42,12 @@ export default {
         exclude: /node_modules/,
       },
       {
-        test: /\.css$/i,
-        use: [MiniCssExtractPlugin.loader, "css-loader"],
+        test: /\.s?css$/i,
+        use: [MiniCssExtractPlugin.loader, "css-loader", "sass-loader"],
       },
       {
         test: /\.(woff|woff2|eot|ttf|otf)$/i,
         type: "asset/resource",
-      },
-      {
-        test: /\.s[ac]ss$/i,
-        use: ["css-loader", "sass-loader"],
       },
     ],
   },
